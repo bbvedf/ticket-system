@@ -1,0 +1,243 @@
+<%-- src/main/webapp/WEB-INF/views/ticket-detail.jsp --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket System - Ticket #${ticket.id}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .ticket-card {
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+        }
+        .ticket-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-ticket-perforated"></i> Ticket System
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/tickets"><i class="bi bi-list"></i> Todos los Tickets</a>
+                <a class="nav-link" href="/tickets/new"><i class="bi bi-plus-circle"></i> Nuevo Ticket</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <c:if test="${not empty message}">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${error}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Ticket #${ticket.id}</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/tickets">Tickets</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">#${ticket.id}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <a href="/tickets/${ticket.id}/edit" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Editar
+                </a>
+                <a href="/tickets/${ticket.id}/delete" class="btn btn-outline-danger" 
+                   onclick="return confirm('¿Eliminar este ticket?')">
+                    <i class="bi bi-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Información del Ticket -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">${ticket.title}</h5>
+                        <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'CRITICAL' ? 'dark' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">
+                            ${ticket.priority}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">${fn:replace(ticket.description, '
+', '<br>')}</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6>Información del Cliente</h6>
+                                <p><i class="bi bi-person"></i> ${ticket.clientName}</p>
+                                <p><i class="bi bi-envelope"></i> ${ticket.clientEmail}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Metadatos</h6>
+                                <p><i class="bi bi-tag"></i> ${ticket.category}</p>
+                                <p><i class="bi bi-clock"></i> ${ticket.createdAt}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group" role="group">
+                            <c:forEach var="statusOption" items="${['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']}">
+                                <a href="/tickets/${ticket.id}/status?status=${statusOption}" 
+                                   class="btn btn-${ticket.status == statusOption ? 'primary' : 'outline-secondary'} btn-sm">
+                                    ${statusOption}
+                                </a>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comentarios -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Comentarios</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para nuevo comentario -->
+                        <form action="/tickets/${ticket.id}/comments" method="post" class="mb-4">
+                            <div class="mb-3">
+                                <label for="authorName" class="form-label">Tu nombre</label>
+                                <input type="text" class="form-control" id="authorName" name="authorName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="commentText" name="commentText" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-chat-left-text"></i> Añadir Comentario
+                            </button>
+                        </form>
+                        
+                        <!-- Lista de comentarios -->
+                        <c:if test="${not empty ticket.comments}">
+                            <h6>Comentarios anteriores:</h6>
+                            <c:forEach var="comment" items="${ticket.comments}">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <strong>${comment.authorName}</strong>
+                                            <small class="text-muted">${comment.createdAt}</small>
+                                        </div>
+                                        <p class="mt-2 mb-0">${comment.commentText}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <!-- Panel lateral -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Estado</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} fs-5 p-3">
+                            ${ticket.status}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Acciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="/tickets" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver a la lista
+                            </a>
+                            <a href="/tickets/${ticket.id}/edit" class="btn btn-primary">
+                                <i class="bi bi-pencil"></i> Editar Ticket
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Información</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-6">Creado:</dt>
+                            <dd class="col-sm-6">${ticket.createdAt}</dd>
+                            
+                            <dt class="col-sm-6">Última actualización:</dt>
+                            <dd class="col-sm-6">${ticket.updatedAt}</dd>
+                            
+                            <c:if test="${not empty ticket.resolvedAt}">
+                                <dt class="col-sm-6">Resuelto:</dt>
+                                <dd class="col-sm-6">${ticket.resolvedAt}</dd>
+                            </c:if>
+                            
+                            <c:if test="${not empty ticket.assignedTo}">
+                                <dt class="col-sm-6">Asignado a:</dt>
+                                <dd class="col-sm-6">${ticket.assignedTo}</dd>
+                            </c:if>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Ticket System v1.0 - Sistema de Gestión de Tickets</span>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function confirmDelete(message) {
+            return confirm(message || '¿Está seguro de eliminar este registro?');
+        }
+        
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                bootstrap.Alert.getInstance(alert)?.close();
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

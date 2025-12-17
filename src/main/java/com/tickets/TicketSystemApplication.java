@@ -1,0 +1,13 @@
+// src/main/java/com/tickets/TicketSystemApplication.java
+package com.tickets;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class TicketSystemApplication {
+    
+    public static void main(String[] args) {
+        SpringApplication.run(TicketSystemApplication.class, args);
+    }
+}
