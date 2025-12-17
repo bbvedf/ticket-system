@@ -1,0 +1,80 @@
+# .gitignore para Java + Docker + JSP
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+.env.development
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+bin/
+build/
+
+# Logs
+logs/
+*.log
+log/
+target/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Docker
+**/.dockerignore
+**/.env
+docker-compose.override.yml
+
+# Base de datos local
+*.db
+*.sqlite
+hs_err_pid*
+
+# Archivos de aplicación
+uploads/
+!uploads/.gitkeep
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Spring Boot
+application-local.properties
+application-dev.properties
+
+# JSP cache
+**/work/
+
+# Archivos compilados
+*.class
+*.war
+*.jar
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Sistema operativo
+*.orig
+
+# Archivos de usuario
+*.sublime-workspace
+*.code-workspace
