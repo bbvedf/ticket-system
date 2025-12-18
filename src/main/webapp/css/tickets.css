@@ -1,140 +1,39 @@
-/* tickets.css - Estilos específicos para la vista de tickets */
-
-/* Estilos para las tarjetas */
-.ticket-card {
-    transition: transform 0.2s, box-shadow 0.2s;
-    height: 100%;
-    border: 1px solid #dee2e6;
-}
-
-.ticket-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Truncado para título en tabla */
-.tickets-table td:nth-child(2) .fw-semibold.text-truncate,
-.tickets-table td:nth-child(2) .text-muted.small.text-truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 250px;
-    display: block;
-}
-
-/* Título truncado a 2 líneas en cards */
+/* ========== TÍTULO EN CARDS ========== */
+/* Altura fija para título (siempre 2 líneas visualmente) */
 .ticket-card .card-title {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 3em; /* Aprox 2 líneas */
+    min-height: 3em;    /* ← Mínimo 2 líneas */
+    max-height: 3em;    /* ← Máximo 2 líneas */
     line-height: 1.5em;
     margin-bottom: 0.5rem;
+    font-size: 1.1rem;
 }
 
-/* Para navegadores que no soportan line-clamp */
+/* Fallback para navegadores sin line-clamp */
 @supports not (-webkit-line-clamp: 2) {
     .ticket-card .card-title {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-height: auto;
     }
 }
 
+/* ========== BADGES ========== */
+/* Altura fija para contenedor de badges */
 .ticket-badges-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem;
+    gap: 0.4rem;
+    min-height: 26px;   /* ← Altura fija aunque no haya badges */
     margin-bottom: 0.75rem;
-    min-height: 24px; /* Altura mínima para mantener layout */
 }
 
-/* Bordes de prioridad para cards */
-.ticket-card.priority-high {
-    border-left: 4px solid #dc3545;
-}
-
-.ticket-card.priority-medium {
-    border-left: 4px solid #ffc107;
-}
-
-.ticket-card.priority-low {
-    border-left: 4px solid #198754;
-}
-
-/* Badges */
-.status-badge {
-    font-size: 0.7em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Estilos para tabla de tickets */
-.tickets-table tr.priority-high {
-    border-left: 4px solid #dc3545;
-    background-color: rgba(220, 53, 69, 0.05);
-}
-
-.tickets-table tr.priority-medium {
-    border-left: 4px solid #ffc107;
-    background-color: rgba(255, 193, 7, 0.05);
-}
-
-.tickets-table tr.priority-low {
-    border-left: 4px solid #198754;
-    background-color: rgba(25, 135, 84, 0.05);
-}
-
-/* Hover para filas de tabla */
-.tickets-table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.075);
-}
-
-/* Controles de vista */
-.view-toggle .btn.active {
-    background-color: #0d6efd;
-    color: white;
-    border-color: #0d6efd;
-}
-
-/* Ajustes responsive para tabla */
-@media (max-width: 768px) {
-    .tickets-table-container {
-        font-size: 0.9rem;
-    }
-    
-    .tickets-table th, 
-    .tickets-table td {
-        padding: 0.5rem;
-    }
-    
-    .table-action-btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-    }
-}
-
-/* Texto truncado en tabla */
-.text-truncate-cell {
-    max-width: 300px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Contador de tickets */
-.tickets-count {
-    font-size: 0.875rem;
-}
-
-/* Transición suave entre vistas */
-.view-container {
-    transition: opacity 0.3s ease;
-}
-
-/* Normalizar todos los badges */
+/* Normalizar badges */
 .ticket-card .badge,
 .tickets-table .badge {
     font-size: 0.75rem;
@@ -145,7 +44,20 @@
     vertical-align: middle;
 }
 
-/* Badges de estado */
+/* ========== LAYOUT FLEX PARA CARDS ========== */
+/* Hacer que card-body use flex column */
+.ticket-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Empuja el contenido inferior hacia abajo */
+.ticket-card .mt-3 {
+    margin-top: auto !important; /* ← Fuerza al fondo */
+}
+
+/* ========== BADGES DE ESTADO ========== */
 .badge-status-open { 
     background-color: #EDD3ED !important; 
     color: #000 !important;
@@ -158,7 +70,7 @@
 
 .badge-status-resolved { 
     background-color: #C785C8 !important; 
-    color: #000 !important;
+    color: white !important;
 }
 
 .badge-status-closed { 
@@ -166,7 +78,7 @@
     color: white !important;
 }
 
-/* Badges de prioridad */
+/* ========== BADGES DE PRIORIDAD ========== */
 .badge-priority-low { 
     background-color: #198754 !important; 
     color: white !important;
@@ -187,7 +99,36 @@
     color: white !important;
 }
 
-/* Espaciado entre badges */
-.ticket-card .badge:not(:last-child) {
-    margin-right: 0.3rem;
+/* ========== TABLA ========== */
+/* Truncado para título en tabla */
+.tickets-table td:nth-child(2) {
+    max-width: 280px !important; /* Limita toda la celda */
+    width: 280px; /* Ancho fijo */
+}
+
+.tickets-table td:nth-child(2) div:first-child,
+.tickets-table td:nth-child(2) div:last-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .ticket-card .card-title {
+        font-size: 1rem;
+        min-height: 2.5em;
+        max-height: 2.5em;
+    }
+    
+    .ticket-badges-container {
+        gap: 0.2rem;
+        min-height: 24px;
+    }
+    
+    .ticket-badges-container .badge {
+        font-size: 0.7rem;
+        padding: 0.25em 0.5em;
+    }
 }

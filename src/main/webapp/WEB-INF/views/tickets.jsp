@@ -151,8 +151,8 @@
                     <tr class="priority-${ticket.priority.toLowerCase()}">
                     <td class="fw-bold">#${ticket.id}</td>
                         <td>
-                            <div class="fw-semibold text-truncate" title="#${ticket.id} - ${ticket.title}">
-                                #${ticket.id} - ${ticket.title}
+                            <div class="fw-semibold text-truncate" title="${ticket.title}">
+                                ${ticket.title}
                             </div>
                             <div class="text-muted small text-truncate" title="${ticket.description}">
                                 ${ticket.description}
