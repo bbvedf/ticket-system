@@ -1,4 +1,4 @@
-<%-- src/main/webapp/WEB-INF/views/tickets.jsp --%>
+<%-- tickets.jsp - Versión limpia --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -22,7 +22,7 @@
     </div>
 </c:if>
 
-<!-- Título -->
+<!-- Título y botón nuevo -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-ticket-detailed"></i> Tickets</h2>
     <a href="/tickets/new" class="btn btn-primary">
@@ -30,7 +30,7 @@
     </a>
 </div>
 
-<!-- Filtros -->
+<!-- Filtros mejorados -->
 <div class="card mb-4">
     <div class="card-body">
         <form method="get" action="/tickets" class="row g-3">
@@ -51,65 +51,161 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Buscar..." 
-                       value="${param.search}">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" 
+                           placeholder="Buscar por título, descripción, cliente..." 
+                           value="${param.search}"
+                           aria-label="Buscar tickets">
+                    <c:if test="${not empty param.search}">
+                        <a href="/tickets" class="btn btn-outline-secondary" title="Limpiar búsqueda">
+                            <i class="bi bi-x"></i>
+                        </a>
+                    </c:if>
+                </div>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-outline-secondary w-100">
-                    <i class="bi bi-funnel"></i> Filtrar
-                </button>
+                <div class="d-grid gap-2 d-md-flex">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-funnel"></i> Filtrar
+                    </button>
+                    <a href="/tickets" class="btn btn-outline-secondary" title="Restablecer filtros">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Lista de Tickets -->
-<c:choose>
-    <c:when test="${empty tickets}">
-        <div class="alert alert-info">
-            No hay tickets disponibles. <a href="/tickets/new">Crear el primero</a>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <div class="row">
-            <c:forEach var="ticket" items="${tickets}">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card ticket-card priority-${ticket.priority.toLowerCase()}">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">#${ticket.id} - ${ticket.title}</h5>
-                                <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} status-badge">
-                                    ${ticket.status}
-                                </span>
+<!-- Controles de vista -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="tickets-count text-muted">
+        <i class="bi bi-info-circle"></i> Mostrando ${fn:length(tickets)} tickets
+    </div>
+    <div class="btn-group view-toggle" role="group">
+        <button type="button" class="btn btn-outline-secondary active" id="gridViewBtn" data-view="grid">
+            <i class="bi bi-grid"></i> Cuadrícula
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="tableViewBtn" data-view="table">
+            <i class="bi bi-list"></i> Tabla
+        </button>
+    </div>
+</div>
+
+<!-- Vista Tabla -->
+<div id="tableView" class="view-container d-none">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle tickets-table">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 80px;">ID</th>
+                    <th>Título</th>
+                    <th style="width: 120px;">Cliente</th>
+                    <th style="width: 120px;">Prioridad</th>
+                    <th style="width: 120px;">Estado</th>
+                    <th style="width: 180px;">Fecha</th>
+                    <th style="width: 100px;" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="ticket" items="${tickets}">
+                    <tr class="priority-${ticket.priority.toLowerCase()}">
+                        <td class="fw-bold">#${ticket.id}</td>
+                        <td>
+                            <div class="fw-semibold">${ticket.title}</div>
+                            <div class="text-muted small text-truncate-cell">
+                                ${ticket.description}
                             </div>
-                            
-                            <p class="card-text text-muted small mb-2">
-                                <i class="bi bi-person"></i> ${ticket.clientName}
-                                <span class="mx-2">•</span>
-                                <i class="bi bi-envelope"></i> ${ticket.clientEmail}
-                            </p>
-                            
-                            <p class="card-text">
-                                ${fn:substring(ticket.description, 0, 100)}...
-                            </p>
-                            
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="bi bi-calendar"></i> 
-                                    ${ticket.createdAt}
-                                </small>
-                                <div>
-                                    <a href="/tickets/${ticket.id}" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i> Ver
-                                    </a>
+                        </td>
+                        <td>
+                            <div>${ticket.clientName}</div>
+                            <div class="text-muted small">${ticket.clientEmail}</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">
+                                ${ticket.priority}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'}">
+                                ${ticket.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="small">${ticket.createdAt}</div>
+                            <c:if test="${not empty ticket.updatedAt && ticket.updatedAt != ticket.createdAt}">
+                                <div class="text-muted smaller">
+                                    <i class="bi bi-arrow-repeat"></i> Actualizado
+                                </div>
+                            </c:if>
+                        </td>
+                        <td class="text-center">
+                            <a href="/tickets/${ticket.id}" class="btn btn-sm btn-outline-primary table-action-btn" title="Ver detalles">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="/tickets/${ticket.id}/edit" class="btn btn-sm btn-outline-secondary table-action-btn" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Vista Grid -->
+<div id="gridView" class="view-container">
+    <c:choose>
+        <c:when test="${empty tickets}">
+            <div class="alert alert-info">
+                No hay tickets disponibles. <a href="/tickets/new">Crear el primero</a>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <c:forEach var="ticket" items="${tickets}">
+                    <div class="col">
+                        <div class="card ticket-card priority-${ticket.priority.toLowerCase()} h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">#${ticket.id} - ${ticket.title}</h5>
+                                    <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} status-badge">
+                                        ${ticket.status}
+                                    </span>
+                                </div>
+                                
+                                <p class="card-text text-muted small mb-2">
+                                    <i class="bi bi-person"></i> ${ticket.clientName}
+                                    <span class="mx-2">•</span>
+                                    <i class="bi bi-envelope"></i> ${ticket.clientEmail}
+                                </p>
+                                
+                                <p class="card-text">
+                                    ${fn:substring(ticket.description, 0, 100)}...
+                                </p>
+                                
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar"></i> 
+                                        ${ticket.createdAt}
+                                    </small>
+                                    <div>
+                                        <a href="/tickets/${ticket.id}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Ver
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
-        </div>
-    </c:otherwise>
-</c:choose>
+                </c:forEach>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+<!-- Incluir JavaScript específico de tickets -->
+<script src="/js/tickets.js"></script>
 
 <jsp:include page="footer.jsp"/>

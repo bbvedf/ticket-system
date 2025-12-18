@@ -16,7 +16,8 @@
     
     <!-- CSS de tema -->
     <link rel="stylesheet" href="/css/styles.css">
-    
+    <link rel="stylesheet" href="/css/tickets.css">
+
     <style>
         body {
             display: flex;
