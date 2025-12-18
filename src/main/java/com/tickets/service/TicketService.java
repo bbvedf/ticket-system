@@ -31,7 +31,7 @@ public class TicketService {
                     t.getTitle().toLowerCase().contains(search.toLowerCase()) ||
                     t.getDescription().toLowerCase().contains(search.toLowerCase()) ||
                     (t.getClientName() != null && 
-                     t.getClientName().toLowerCase().contains(search.toLowerCase())))
+                    t.getClientName().toLowerCase().contains(search.toLowerCase())))
                 .collect(Collectors.toList());
     }
     

@@ -25,9 +25,17 @@ public class TicketController {
             @RequestParam(required = false) String search,
             Model model) {
         
-        List<Ticket> tickets = ticketService.findAllFiltered(status, priority, search);
+        List<Ticket> tickets = ticketService.findAllFiltered(
+            emptyToNull(status),
+            emptyToNull(priority),
+            emptyToNull(search)
+        );
         model.addAttribute("tickets", tickets);
         return "tickets";
+    }
+
+    private String emptyToNull(String value) {
+        return (value != null && value.isEmpty()) ? null : value;
     }
     
     // Ver detalle de un ticket
