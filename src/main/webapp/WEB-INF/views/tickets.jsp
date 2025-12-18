@@ -149,10 +149,12 @@
             <tbody>
                 <c:forEach var="ticket" items="${tickets}">
                     <tr class="priority-${ticket.priority.toLowerCase()}">
-                        <td class="fw-bold">#${ticket.id}</td>
+                    <td class="fw-bold">#${ticket.id}</td>
                         <td>
-                            <div class="fw-semibold">${ticket.title}</div>
-                            <div class="text-muted small text-truncate-cell">
+                            <div class="fw-semibold text-truncate" title="#${ticket.id} - ${ticket.title}">
+                                #${ticket.id} - ${ticket.title}
+                            </div>
+                            <div class="text-muted small text-truncate" title="${ticket.description}">
                                 ${ticket.description}
                             </div>
                         </td>
@@ -161,7 +163,7 @@
                             <div class="text-muted small">${ticket.clientEmail}</div>
                         </td>
                         <td>
-                            <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">                                
+                            <span class="badge badge-priority-${fn:toLowerCase(ticket.priority)}">
                                 <c:choose>
                                     <c:when test="${ticket.priority == 'LOW'}">Baja</c:when>
                                     <c:when test="${ticket.priority == 'MEDIUM'}">Media</c:when>
@@ -172,14 +174,14 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'}">                                
+                            <span class="badge badge-status-${fn:toLowerCase(ticket.status)}">
                                 <c:choose>
                                     <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
                                     <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
                                     <c:when test="${ticket.status == 'RESOLVED'}">Resuelto</c:when>
                                     <c:when test="${ticket.status == 'CLOSED'}">Cerrado</c:when>
                                     <c:otherwise>${ticket.status}</c:otherwise>
-                                </c:choose> 
+                                </c:choose>
                             </span>
                         </td>
                         <td>
@@ -219,9 +221,17 @@
                     <div class="col">
                         <div class="card ticket-card priority-${ticket.priority.toLowerCase()} h-100">
                             <div class="card-body">
+                                <!-- Título solo -->
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="card-title mb-0">#${ticket.id} - ${ticket.title}</h5>
-                                    <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} status-badge">                                        
+                                    <h5 class="card-title" title="#${ticket.id} - ${ticket.title}">
+                                        #${ticket.id} - ${ticket.title}
+                                    </h5>
+                                </div>
+                                
+                                <!-- Badges debajo del título -->
+                                <div class="ticket-badges-container">
+                                    <!-- Estado -->
+                                    <span class="badge badge-status-${fn:toLowerCase(ticket.status)}">
                                         <c:choose>
                                             <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
                                             <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
@@ -230,8 +240,19 @@
                                             <c:otherwise>${ticket.status}</c:otherwise>
                                         </c:choose>
                                     </span>
+                                    <!-- Prioridad -->
+                                    <span class="badge badge-priority-${fn:toLowerCase(ticket.priority)}">
+                                        <c:choose>
+                                            <c:when test="${ticket.priority == 'LOW'}">Baja</c:when>
+                                            <c:when test="${ticket.priority == 'MEDIUM'}">Media</c:when>
+                                            <c:when test="${ticket.priority == 'HIGH'}">Alta</c:when>
+                                            <c:when test="${ticket.priority == 'CRITICAL'}">Crítica</c:when>
+                                            <c:otherwise>${ticket.priority}</c:otherwise>
+                                        </c:choose>
+                                    </span>
                                 </div>
                                 
+                                <!-- Resto del contenido DENTRO del card-body -->
                                 <p class="card-text text-muted small mb-2">
                                     <i class="bi bi-person"></i> ${ticket.clientName}
                                     <span class="mx-2">•</span>
@@ -253,8 +274,8 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div> <!-- ← card-body -->
+                        </div> <!-- ← card -->
                     </div>
                 </c:forEach>
             </div>

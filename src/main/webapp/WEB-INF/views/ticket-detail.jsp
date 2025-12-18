@@ -143,7 +143,7 @@
                         <h5 class="mb-0">Estado</h5>
                     </div>
                     <div class="card-body text-center">
-                        <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} fs-5 p-3">
+                        <span class="badge badge-status-${fn:toLowerCase(ticket.status)} fs-5 p-3">
                             <c:choose>
                                 <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
                                 <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
