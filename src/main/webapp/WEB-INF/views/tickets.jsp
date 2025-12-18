@@ -30,6 +30,45 @@
     </a>
 </div>
 
+<!-- ESTADÍSTICAS RÁPIDAS -->
+<div class="row mb-4 g-3">
+    <div class="col-6 col-md-3">
+        <div class="card border-danger">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title mb-1 text-primary">${openCount}</h4>
+                <h6 class="card-subtitle text-muted">Abiertos</h6>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-3">
+        <div class="card border-warning">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title mb-1 text-warning">${inProgressCount}</h4>
+                <h6 class="card-subtitle text-muted">En Progreso</h6>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-3">
+        <div class="card border-success">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title mb-1 text-success">${resolvedCount}</h4>
+                <h6 class="card-subtitle text-muted">Resueltos</h6>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-md-3">
+        <div class="card border-primary">
+            <div class="card-body text-center py-3">
+                <h4 class="card-title mb-1">${totalCount}</h4>
+                <h6 class="card-subtitle text-muted">Total</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Filtros mejorados -->
 <div class="card mb-4">
     <div class="card-body">
@@ -122,13 +161,25 @@
                             <div class="text-muted small">${ticket.clientEmail}</div>
                         </td>
                         <td>
-                            <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">
-                                ${ticket.priority}
+                            <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">                                
+                                <c:choose>
+                                    <c:when test="${ticket.priority == 'LOW'}">Baja</c:when>
+                                    <c:when test="${ticket.priority == 'MEDIUM'}">Media</c:when>
+                                    <c:when test="${ticket.priority == 'HIGH'}">Alta</c:when>
+                                    <c:when test="${ticket.priority == 'CRITICAL'}">Crítica</c:when>
+                                    <c:otherwise>${ticket.priority}</c:otherwise>
+                                </c:choose>
                             </span>
                         </td>
                         <td>
-                            <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'}">
-                                ${ticket.status}
+                            <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'}">                                
+                                <c:choose>
+                                    <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
+                                    <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
+                                    <c:when test="${ticket.status == 'RESOLVED'}">Resuelto</c:when>
+                                    <c:when test="${ticket.status == 'CLOSED'}">Cerrado</c:when>
+                                    <c:otherwise>${ticket.status}</c:otherwise>
+                                </c:choose> 
                             </span>
                         </td>
                         <td>
@@ -170,8 +221,14 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h5 class="card-title mb-0">#${ticket.id} - ${ticket.title}</h5>
-                                    <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} status-badge">
-                                        ${ticket.status}
+                                    <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} status-badge">                                        
+                                        <c:choose>
+                                            <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
+                                            <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
+                                            <c:when test="${ticket.status == 'RESOLVED'}">Resuelto</c:when>
+                                            <c:when test="${ticket.status == 'CLOSED'}">Cerrado</c:when>
+                                            <c:otherwise>${ticket.status}</c:otherwise>
+                                        </c:choose>
                                     </span>
                                 </div>
                                 

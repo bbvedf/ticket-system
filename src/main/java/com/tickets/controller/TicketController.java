@@ -30,7 +30,11 @@ public class TicketController {
             emptyToNull(priority),
             emptyToNull(search)
         );
-        model.addAttribute("tickets", tickets);
+        model.addAttribute("tickets", tickets);        
+        model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
+        model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
+        model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
+        model.addAttribute("totalCount", ticketService.countAll());
         return "tickets";
     }
 

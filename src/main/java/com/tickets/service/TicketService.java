@@ -55,8 +55,10 @@ public class TicketService {
     }
     
     public long countByStatus(String status) {
-        return findAll().stream()
-                .filter(t -> t.getStatus().equals(status))
-                .count();
+        return ticketRepository.countByStatus(status);
+    }
+
+    public long countAll() {        
+        return ticketRepository.count();
     }
 }

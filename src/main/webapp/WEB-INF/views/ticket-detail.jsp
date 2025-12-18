@@ -51,8 +51,14 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">${ticket.title}</h5>
-                        <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'CRITICAL' ? 'dark' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">
-                            ${ticket.priority}
+                        <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'CRITICAL' ? 'dark' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">                            
+                            <c:choose>
+                                <c:when test="${ticket.priority == 'LOW'}">Baja</c:when>
+                                <c:when test="${ticket.priority == 'MEDIUM'}">Media</c:when>
+                                <c:when test="${ticket.priority == 'HIGH'}">Alta</c:when>
+                                <c:when test="${ticket.priority == 'CRITICAL'}">Crítica</c:when>
+                                <c:otherwise>${ticket.priority}</c:otherwise>
+                            </c:choose>
                         </span>
                     </div>
                     <div class="card-body">
@@ -76,8 +82,14 @@
                         <div class="btn-group" role="group">
                             <c:forEach var="statusOption" items="${['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']}">
                                 <a href="/tickets/${ticket.id}/status?status=${statusOption}" 
-                                   class="btn btn-${ticket.status == statusOption ? 'primary' : 'outline-secondary'} btn-sm">
-                                    ${statusOption}
+                                   class="btn btn-${ticket.status == statusOption ? 'primary' : 'outline-secondary'} btn-sm">                                    
+                                    <c:choose>
+                                        <c:when test="${statusOption == 'OPEN'}">Abierto</c:when>
+                                        <c:when test="${statusOption == 'IN_PROGRESS'}">En Progreso</c:when>
+                                        <c:when test="${statusOption == 'RESOLVED'}">Resuelto</c:when>
+                                        <c:when test="${statusOption == 'CLOSED'}">Cerrado</c:when>
+                                        <c:otherwise>${statusOption}</c:otherwise>
+                                    </c:choose>
                                 </a>
                             </c:forEach>
                         </div>
@@ -132,7 +144,13 @@
                     </div>
                     <div class="card-body text-center">
                         <span class="badge bg-${ticket.status == 'OPEN' ? 'danger' : ticket.status == 'IN_PROGRESS' ? 'warning' : 'success'} fs-5 p-3">
-                            ${ticket.status}
+                            <c:choose>
+                                <c:when test="${ticket.status == 'OPEN'}">Abierto</c:when>
+                                <c:when test="${ticket.status == 'IN_PROGRESS'}">En Progreso</c:when>
+                                <c:when test="${ticket.status == 'RESOLVED'}">Resuelto</c:when>
+                                <c:when test="${ticket.status == 'CLOSED'}">Cerrado</c:when>
+                                <c:otherwise>${ticket.status}</c:otherwise>
+                            </c:choose>
                         </span>
                     </div>
                 </div>

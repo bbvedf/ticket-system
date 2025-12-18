@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     // Consultas básicas de Spring Data
     java.util.List<Ticket> findAllByOrderByCreatedAtDesc();
+
+    long countByStatus(String status);
 }
