@@ -21,6 +21,12 @@
     </properties>
     
     <dependencies>
+        <!-- DevTools para desarrollo rápido -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- Web con JSP -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
