@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -60,7 +66,7 @@ public class TicketService {
         return ticketRepository.countByStatus(status);
     }
 
-    public long countAll() {        
+    public long countAll() {
         return ticketRepository.count();
     }
 
@@ -72,4 +78,10 @@ public class TicketService {
     counts.put("CRITICAL", ticketRepository.countByStatusAndPriority("OPEN", "CRITICAL"));
     return counts;
     }
+
+    public Page<Ticket> findAllPaginated(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+    return ticketRepository.findAll(pageable);
+    }
+
 }

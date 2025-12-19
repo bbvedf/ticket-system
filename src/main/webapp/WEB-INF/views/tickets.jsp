@@ -135,6 +135,133 @@
     </div>
 </div>
 
+<!-- Paginación -->
+<!-- Paginación TODO EN UNA FILA -->
+<c:if test="${totalPages > 1}">
+    <!-- Construir parámetros de filtro -->
+    <c:set var="filterParams" value="" />
+    <c:if test="${not empty param.status}">
+        <c:set var="filterParams" value="${filterParams}&status=${param.status}" />
+    </c:if>
+    <c:if test="${not empty param.priority}">
+        <c:set var="filterParams" value="${filterParams}&priority=${param.priority}" />
+    </c:if>
+    <c:if test="${not empty param.search}">
+        <c:set var="filterParams" value="${filterParams}&search=${fn:escapeXml(param.search)}" />
+    </c:if>
+    <c:if test="${not empty param.view}">
+        <c:set var="filterParams" value="${filterParams}&view=${param.view}" />
+    </c:if>
+    
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-3 p-3 border rounded bg-light">
+        <!-- IZQUIERDA: Filas por página + Input personalizado -->
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Filas por página:</span>
+            <select class="form-select form-select-sm w-auto" 
+                    onchange="location.href='?page=0&size='+this.value+'${filterParams}'">
+                <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+                <option value="15" ${pageSize == 15 ? 'selected' : ''}>15</option>
+                <option value="25" ${pageSize == 25 ? 'selected' : ''}>25</option>
+                <option value="50" ${pageSize == 50 ? 'selected' : ''}>50</option>
+            </select>
+            
+            <div class="input-group input-group-sm" style="width: 120px;">
+                <input type="number" id="customPageSize" class="form-control" 
+                       min="1" max="200" placeholder="Personalizado" value="${pageSize}">
+                <button class="btn btn-outline-secondary" type="button"
+                        onclick="applyCustomPageSize()">
+                    OK
+                </button>
+            </div>
+        </div>
+        
+        <!-- CENTRO: Contador de registros -->
+        <div class="text-muted small text-center">
+            Mostrando <strong>${currentPage * pageSize + 1} - ${currentPage * pageSize + fn:length(tickets)}</strong> 
+            de <strong>${totalItems}</strong> tickets
+        </div>
+        
+        <!-- DERECHA: Navegación avanzada -->
+        <div class="d-flex align-items-center gap-2">
+            <!-- Botón Anterior -->
+            <button class="btn btn-outline-secondary btn-sm ${currentPage == 0 ? 'disabled' : ''}"
+                    onclick="location.href='?page=${currentPage - 1}&size=${pageSize}${filterParams}'"
+                    ${currentPage == 0 ? 'disabled' : ''}>
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <!-- Select de página -->
+            <select class="form-select form-select-sm w-auto" 
+                    onchange="location.href='?page='+(this.value-1)+'&size=${pageSize}${filterParams}'">
+                <c:forEach begin="1" end="${totalPages}" var="pageNum">
+                    <option value="${pageNum}" ${currentPage + 1 == pageNum ? 'selected' : ''}>
+                        Pág. ${pageNum}
+                    </option>
+                </c:forEach>
+            </select>
+            
+            <!-- Botón Siguiente -->
+            <button class="btn btn-outline-secondary btn-sm ${currentPage == totalPages - 1 ? 'disabled' : ''}"
+                    onclick="location.href='?page=${currentPage + 1}&size=${pageSize}${filterParams}'"
+                    ${currentPage == totalPages - 1 ? 'disabled' : ''}>
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            
+            <!-- Input Ir a + OK -->
+            <div class="input-group input-group-sm" style="width: 140px;">
+                <input type="number" id="goToPage" class="form-control" 
+                    min="1" max="${totalPages}" placeholder="Ir a página"
+                    data-max-pages="${totalPages}">
+                <button class="btn btn-outline-primary" type="button"
+                        onclick="goToCustomPage()">
+                    Ir
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript para funcionalidades extra -->
+    <script>
+        function applyCustomPageSize() {
+            const customSize = document.getElementById('customPageSize').value;
+            if (customSize && customSize >= 1 && customSize <= 200) {
+                location.href = '?page=0&size=' + customSize + '${filterParams}';
+            }
+        }
+        
+        function goToCustomPage() {
+            const goToInput = document.getElementById('goToPage');
+            if (!goToInput) return;
+            
+            const pageNum = goToInput.value;
+            const maxPages = goToInput.getAttribute('data-max-pages');
+            
+            if (pageNum && pageNum >= 1 && pageNum <= maxPages) {
+                location.href = '?page=' + (pageNum - 1) + '&size=${pageSize}${filterParams}';
+            } else {
+                alert('Por favor ingresa un número entre 1 y ' + maxPages);
+            }
+        }
+        
+        // Enter key support
+        const customSizeInput = document.getElementById('customPageSize');
+        const goToPageInput = document.getElementById('goToPage');
+        
+        if (customSizeInput) {
+            customSizeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') applyCustomPageSize();
+            });
+        }
+        
+        if (goToPageInput) {
+            goToPageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') goToCustomPage();
+            });
+        }
+    </script>
+</c:if>
+
 <!-- Vista Tabla -->
 <div id="tableView" class="view-container d-none">
     <div class="table-responsive">

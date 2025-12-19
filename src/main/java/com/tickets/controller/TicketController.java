@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Controller
@@ -23,21 +23,29 @@ public class TicketController {
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String priority,
             @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             Model model) {
         
-        List<Ticket> tickets = ticketService.findAllFiltered(
-            emptyToNull(status),
-            emptyToNull(priority),
-            emptyToNull(search)
-        );
-        model.addAttribute("tickets", tickets);        
-        model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
-        model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
-        model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
-        model.addAttribute("totalCount", ticketService.countAll());
-        model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
-        return "tickets";
-    }
+            Page<Ticket> ticketPage = ticketService.findAllPaginated(page, size);
+            List<Ticket> tickets = ticketPage.getContent();
+            
+            // Mantener estadísticas (usan todos los tickets, no solo página)
+            model.addAttribute("tickets", tickets);
+            model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
+            model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
+            model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
+            model.addAttribute("totalCount", ticketService.countAll());
+            model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
+            
+            // NUEVO: Atributos para paginación
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", ticketPage.getTotalPages());
+            model.addAttribute("totalItems", ticketPage.getTotalElements());
+            model.addAttribute("pageSize", size);
+            
+            return "tickets";
+            }
 
     private String emptyToNull(String value) {
         return (value != null && value.isEmpty()) ? null : value;
