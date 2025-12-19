@@ -30,41 +30,45 @@
     </a>
 </div>
 
-<!-- ESTADÍSTICAS RÁPIDAS -->
-<div class="row mb-4 g-3">
-    <div class="col-6 col-md-3">
-        <div class="card border-danger">
-            <div class="card-body text-center py-3">
-                <h4 class="card-title mb-1 text-primary">${openCount}</h4>
-                <h6 class="card-subtitle text-muted">Abiertos</h6>
-            </div>
+<!-- ESTADÍSTICAS -->
+<div class="card p-4 mb-4">
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 text-center">
+            <h4>${openCount}</h4>
+            <h6 class="text-muted">Abiertos</h6>
+        </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4>${inProgressCount}</h4>
+            <h6 class="text-muted">En Progreso</h6>
+        </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4>${resolvedCount}</h4>
+            <h6 class="text-muted">Resueltos</h6>
+        </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4>${totalCount}</h4>
+            <h6 class="text-muted">Total</h6>
         </div>
     </div>
-    
-    <div class="col-6 col-md-3">
-        <div class="card border-warning">
-            <div class="card-body text-center py-3">
-                <h4 class="card-title mb-1 text-warning">${inProgressCount}</h4>
-                <h6 class="card-subtitle text-muted">En Progreso</h6>
-            </div>
+
+    <hr class="my-3">
+
+    <div class="row g-3">
+        <div class="col-6 col-md-3 text-center">
+            <h4 class="card-title mb-1">${openByPriority.LOW}</h4>
+            <span class="badge badge-priority-low">Baja</span>
         </div>
-    </div>
-    
-    <div class="col-6 col-md-3">
-        <div class="card border-success">
-            <div class="card-body text-center py-3">
-                <h4 class="card-title mb-1 text-success">${resolvedCount}</h4>
-                <h6 class="card-subtitle text-muted">Resueltos</h6>
-            </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4 class="card-title mb-1">${openByPriority.MEDIUM}</h4>
+            <span class="badge badge-priority-medium">Media</span>
         </div>
-    </div>
-    
-    <div class="col-6 col-md-3">
-        <div class="card border-primary">
-            <div class="card-body text-center py-3">
-                <h4 class="card-title mb-1">${totalCount}</h4>
-                <h6 class="card-subtitle text-muted">Total</h6>
-            </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4 class="card-title mb-1">${openByPriority.HIGH}</h4>
+            <span class="badge badge-priority-high">Alta</span>
+        </div>
+        <div class="col-6 col-md-3 text-center">
+            <h4 class="card-title mb-1">${openByPriority.CRITICAL}</h4>
+            <span class="badge badge-priority-critical">Crítica</span>
         </div>
     </div>
 </div>

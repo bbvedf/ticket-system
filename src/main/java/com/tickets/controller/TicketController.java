@@ -35,6 +35,7 @@ public class TicketController {
         model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
         model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
         model.addAttribute("totalCount", ticketService.countAll());
+        model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
         return "tickets";
     }
 

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +62,14 @@ public class TicketService {
 
     public long countAll() {        
         return ticketRepository.count();
+    }
+
+    public Map<String, Long> countOpenTicketsByPriority() {
+    Map<String, Long> counts = new HashMap<>();
+    counts.put("LOW", ticketRepository.countByStatusAndPriority("OPEN", "LOW"));
+    counts.put("MEDIUM", ticketRepository.countByStatusAndPriority("OPEN", "MEDIUM"));
+    counts.put("HIGH", ticketRepository.countByStatusAndPriority("OPEN", "HIGH"));
+    counts.put("CRITICAL", ticketRepository.countByStatusAndPriority("OPEN", "CRITICAL"));
+    return counts;
     }
 }

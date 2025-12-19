@@ -16,8 +16,7 @@
     <!-- MODAL LIMPIO -->
     <link href="/css/modal.css" rel="stylesheet">
 
-    <!-- 3. CSS específicos (sobrescriben tema si necesario) -->
-    <link href="/css/styles.css" rel="stylesheet">
+    <!-- 3. CSS específicos (sobrescriben tema si necesario) -->    
     <link href="/css/tickets.css" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
@@ -84,3 +83,4 @@
 
 <!-- CONTENIDO PRINCIPAL -->
 <main class="container my-4">
+
