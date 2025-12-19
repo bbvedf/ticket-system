@@ -222,5 +222,3 @@
 
 <jsp:include page="footer.jsp"/>
 
-<!-- Incluir JavaScript específico de tickets -->
-<script src="/js/tickets.js"></script>

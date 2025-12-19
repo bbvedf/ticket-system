@@ -287,7 +287,4 @@
     </c:choose>
 </div>
 
-<!-- Incluir JavaScript específico de tickets -->
-<script src="/js/tickets.js"></script>
-
 <jsp:include page="footer.jsp"/>

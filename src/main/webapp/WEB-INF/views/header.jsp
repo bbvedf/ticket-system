@@ -11,13 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">    
     
     <!-- 2. Nuestro tema (sobrescribe Bootstrap) -->
-    <link href="/css/theme.css" rel="stylesheet">
-    
-    <!-- MODAL LIMPIO -->
-    <link href="/css/modal.css" rel="stylesheet">
-
-    <!-- 3. CSS específicos (sobrescriben tema si necesario) -->    
-    <link href="/css/tickets.css" rel="stylesheet">
+    <link href="/css/theme.css" rel="stylesheet">    
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
