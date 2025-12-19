@@ -132,3 +132,27 @@
         padding: 0.25em 0.5em;
     }
 }
+
+/* Botones mejorados */
+.btn {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tamaños de botones */
+.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* Botones en tabla */
+.table-action-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-width: 1px;
+}

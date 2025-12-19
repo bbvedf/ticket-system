@@ -49,17 +49,17 @@
     window.addEventListener('themechange', updateThemeIcon);
 </script>
 
-<!-- Auto-cerrar alerts -->
+<!-- Auto-cerrar alerts (excepto los del modal) -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.alert').forEach(alert => {
+        document.querySelectorAll('.alert:not(.modal .alert)').forEach(alert => {
             setTimeout(() => {
                 const bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
             }, 5000);
         });
     });
-</script>
+</script
 
 </body>
 </html>

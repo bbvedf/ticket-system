@@ -24,26 +24,29 @@
         </c:if>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2>Ticket #${ticket.id}</h2>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="/tickets">Tickets</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">#${ticket.id}</li>
-                    </ol>
-                </nav>
-            </div>
-            <div>
-                <a href="/tickets/${ticket.id}/edit" class="btn btn-outline-primary">
-                    <i class="bi bi-pencil"></i> Editar
-                </a>
-                <a href="/tickets/${ticket.id}/delete" class="btn btn-outline-danger" 
-                   onclick="return confirm('¿Eliminar este ticket?')">
-                    <i class="bi bi-trash"></i> Eliminar
-                </a>
-            </div>
+        <div>
+            <h2 class="mb-0">Ticket #${ticket.id}</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/tickets">Tickets</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">#${ticket.id}</li>
+                </ol>
+            </nav>
         </div>
+        
+        <div>
+            <a href="/tickets" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a la lista
+            </a>
+            <a href="/tickets/${ticket.id}/edit" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <button type="button" class="btn btn-danger" id="deleteButtonTrigger">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+        </div>
+    </div>
 
         <div class="row">
             <div class="col-md-8">
@@ -51,7 +54,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">${ticket.title}</h5>
-                        <span class="badge bg-${ticket.priority == 'HIGH' ? 'danger' : ticket.priority == 'CRITICAL' ? 'dark' : ticket.priority == 'MEDIUM' ? 'warning' : 'success'}">                            
+                        <span class="badge badge-priority-${fn:toLowerCase(ticket.priority)}">
                             <c:choose>
                                 <c:when test="${ticket.priority == 'LOW'}">Baja</c:when>
                                 <c:when test="${ticket.priority == 'MEDIUM'}">Media</c:when>
@@ -154,23 +157,7 @@
                         </span>
                     </div>
                 </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Acciones</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="/tickets" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Volver a la lista
-                            </a>
-                            <a href="/tickets/${ticket.id}/edit" class="btn btn-primary">
-                                <i class="bi bi-pencil"></i> Editar Ticket
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
+                                
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Información</h5>
@@ -198,5 +185,42 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Modal de confirmación para eliminar -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteModalLabel">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar este ticket?</p>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Atención:</strong> Esta acción no se puede deshacer. Se eliminará:
+                        <ul class="mt-2 mb-0">
+                            <li>Ticket #${ticket.id}: ${ticket.title}</li>
+                            <li>${fn:length(ticket.comments)} comentario(s) asociado(s)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" 
+                            data-ticket-id="${ticket.id}">
+                        <i class="bi bi-trash me-1"></i>Sí, eliminar ticket
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <jsp:include page="footer.jsp"/>
+
+<!-- Incluir JavaScript específico de tickets -->
+<script src="/js/tickets.js"></script>

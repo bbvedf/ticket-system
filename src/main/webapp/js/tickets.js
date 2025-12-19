@@ -94,3 +94,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtonTrigger = document.getElementById('deleteButtonTrigger');
+    const deleteModal = document.getElementById('deleteModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    
+    if (deleteButtonTrigger && deleteModal) {
+        const modalInstance = new bootstrap.Modal(deleteModal);
+        deleteButtonTrigger.addEventListener('click', function() {
+            modalInstance.show();
+        });
+    }
+    
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', function() {
+            if (this.disabled) return;
+            const ticketId = this.getAttribute('data-ticket-id');
+            this.disabled = true;
+            this.innerHTML = '<i class="bi bi-hourglass-split me-1"></i> Eliminando...';
+            
+            setTimeout(() => {
+                window.location.href = '/tickets/' + ticketId + '/delete';
+            }, 100);
+        });
+    }
+});
