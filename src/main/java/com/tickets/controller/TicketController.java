@@ -40,15 +40,16 @@ public class TicketController {
         model.addAttribute("tickets", tickets);
         model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
         model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
-        model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
+        model.addAttribute("resolvedAndClosedCount", 
+            ticketService.countByStatus("RESOLVED") + ticketService.countByStatus("CLOSED"));
         model.addAttribute("totalCount", ticketService.countAll());
         model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
-        
+
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", ticketPage.getTotalPages());
         model.addAttribute("totalItems", ticketPage.getTotalElements());
         model.addAttribute("pageSize", size);
-        
+
         return "tickets";
     }
 

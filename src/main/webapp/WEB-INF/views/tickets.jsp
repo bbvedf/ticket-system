@@ -42,8 +42,8 @@
             <h6 class="text-muted">En Progreso</h6>
         </div>
         <div class="col-6 col-md-3 text-center">
-            <h4>${resolvedCount}</h4>
-            <h6 class="text-muted">Resueltos</h6>
+            <h4>${resolvedAndClosedCount}</h4>
+            <h6 class="text-muted">Resueltos/Cerrados</h6>
         </div>
         <div class="col-6 col-md-3 text-center">
             <h4>${totalCount}</h4>
@@ -52,7 +52,9 @@
     </div>
 
     <hr class="my-3">
-
+    <h6 class="mb-2">        
+        <i class="bi bi-info-circle" style="cursor: help;" title="Muestra solo tickets Abiertos y En Progreso"></i>
+    </h6>
     <div class="row g-3">
         <div class="col-6 col-md-3 text-center">
             <h4 class="card-title mb-1">${openByPriority.LOW}</h4>
@@ -84,11 +86,13 @@
                     <option value="OPEN" ${param.status == 'OPEN' ? 'selected' : ''}>Abierto</option>
                     <option value="IN_PROGRESS" ${param.status == 'IN_PROGRESS' ? 'selected' : ''}>En Progreso</option>
                     <option value="RESOLVED" ${param.status == 'RESOLVED' ? 'selected' : ''}>Resuelto</option>
+                    <option value="CLOSED" ${param.status == 'CLOSED' ? 'selected' : ''}>Cerrado</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <select name="priority" class="form-select">
                     <option value="">Todas las prioridades</option>
+                    <option value="CRITICAL" ${param.priority == 'CRITICAL' ? 'selected' : ''}>Crítica</option>
                     <option value="HIGH" ${param.priority == 'HIGH' ? 'selected' : ''}>Alta</option>
                     <option value="MEDIUM" ${param.priority == 'MEDIUM' ? 'selected' : ''}>Media</option>
                     <option value="LOW" ${param.priority == 'LOW' ? 'selected' : ''}>Baja</option>
