@@ -27,25 +27,30 @@ public class TicketController {
             @RequestParam(defaultValue = "10") int size,
             Model model) {
         
-            Page<Ticket> ticketPage = ticketService.findAllPaginated(page, size);
-            List<Ticket> tickets = ticketPage.getContent();
-            
-            // Mantener estadísticas (usan todos los tickets, no solo página)
-            model.addAttribute("tickets", tickets);
-            model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
-            model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
-            model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
-            model.addAttribute("totalCount", ticketService.countAll());
-            model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
-            
-            // NUEVO: Atributos para paginación
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", ticketPage.getTotalPages());
-            model.addAttribute("totalItems", ticketPage.getTotalElements());
-            model.addAttribute("pageSize", size);
-            
-            return "tickets";
-            }
+        // Pasar los filtros al servicio
+        Page<Ticket> ticketPage = ticketService.findAllPaginated(
+            page, size, 
+            emptyToNull(status), 
+            emptyToNull(priority), 
+            search != null ? "%" + search.toLowerCase() + "%" : null
+        );
+        
+        List<Ticket> tickets = ticketPage.getContent();
+        
+        model.addAttribute("tickets", tickets);
+        model.addAttribute("openCount", ticketService.countByStatus("OPEN"));
+        model.addAttribute("inProgressCount", ticketService.countByStatus("IN_PROGRESS"));
+        model.addAttribute("resolvedCount", ticketService.countByStatus("RESOLVED"));
+        model.addAttribute("totalCount", ticketService.countAll());
+        model.addAttribute("openByPriority", ticketService.countOpenTicketsByPriority());
+        
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", ticketPage.getTotalPages());
+        model.addAttribute("totalItems", ticketPage.getTotalElements());
+        model.addAttribute("pageSize", size);
+        
+        return "tickets";
+    }
 
     private String emptyToNull(String value) {
         return (value != null && value.isEmpty()) ? null : value;
@@ -86,19 +91,13 @@ public class TicketController {
     // Actualizar ticket
     @PostMapping("/{id}")
     public String updateTicket(@PathVariable Long id, @ModelAttribute Ticket ticket) {
-        Ticket existing = ticketService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket no encontrado"));
-        
-        existing.setTitle(ticket.getTitle());
-        existing.setDescription(ticket.getDescription());
-        existing.setStatus(ticket.getStatus());
-        existing.setPriority(ticket.getPriority());
-        existing.setCategory(ticket.getCategory());
-        existing.setClientName(ticket.getClientName());
-        existing.setClientEmail(ticket.getClientEmail());
-        existing.setAssignedTo(ticket.getAssignedTo());
-        
-        ticketService.save(existing);
+        System.out.println("DEBUG: Ticket recibido: " + ticket);
+        System.out.println("DEBUG: ID: " + ticket.getId());
+        System.out.println("DEBUG: Title: " + ticket.getTitle());
+        System.out.println("DEBUG: Priority: " + ticket.getPriority());
+        System.out.println("DEBUG: Status: " + ticket.getStatus());
+    
+        ticketService.updateTicket(id, ticket);
         return "redirect:/tickets/" + id + "?message=Ticket actualizado";
     }
     

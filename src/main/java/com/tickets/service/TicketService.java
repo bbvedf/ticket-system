@@ -71,17 +71,47 @@ public class TicketService {
     }
 
     public Map<String, Long> countOpenTicketsByPriority() {
-    Map<String, Long> counts = new HashMap<>();
-    counts.put("LOW", ticketRepository.countByStatusAndPriority("OPEN", "LOW"));
-    counts.put("MEDIUM", ticketRepository.countByStatusAndPriority("OPEN", "MEDIUM"));
-    counts.put("HIGH", ticketRepository.countByStatusAndPriority("OPEN", "HIGH"));
-    counts.put("CRITICAL", ticketRepository.countByStatusAndPriority("OPEN", "CRITICAL"));
-    return counts;
+        Map<String, Long> counts = new HashMap<>();
+        long lowOpen = ticketRepository.countByStatusAndPriority("OPEN", "LOW");
+        long lowInProgress = ticketRepository.countByStatusAndPriority("IN_PROGRESS", "LOW");
+        
+        long mediumOpen = ticketRepository.countByStatusAndPriority("OPEN", "MEDIUM");
+        long mediumInProgress = ticketRepository.countByStatusAndPriority("IN_PROGRESS", "MEDIUM");
+        
+        long highOpen = ticketRepository.countByStatusAndPriority("OPEN", "HIGH");
+        long highInProgress = ticketRepository.countByStatusAndPriority("IN_PROGRESS", "HIGH");
+        
+        long criticalOpen = ticketRepository.countByStatusAndPriority("OPEN", "CRITICAL");
+        long criticalInProgress = ticketRepository.countByStatusAndPriority("IN_PROGRESS", "CRITICAL");
+        
+        counts.put("LOW", lowOpen + lowInProgress);
+        counts.put("MEDIUM", mediumOpen + mediumInProgress);
+        counts.put("HIGH", highOpen + highInProgress);
+        counts.put("CRITICAL", criticalOpen + criticalInProgress);
+        return counts;
     }
 
-    public Page<Ticket> findAllPaginated(int page, int size) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-    return ticketRepository.findAll(pageable);
+    public Page<Ticket> findAllPaginated(int page, int size, String status, String priority, String search) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return ticketRepository.findByFilters(status, priority, search, pageable);
     }
+
+    @Transactional
+    public void updateTicket(Long id, Ticket ticketData) {
+        Ticket existing = findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket no encontrado"));
+        
+        if (ticketData.getTitle() != null) existing.setTitle(ticketData.getTitle());
+        if (ticketData.getDescription() != null) existing.setDescription(ticketData.getDescription());
+        if (ticketData.getStatus() != null) existing.setStatus(ticketData.getStatus());
+        if (ticketData.getPriority() != null) existing.setPriority(ticketData.getPriority());
+        if (ticketData.getCategory() != null) existing.setCategory(ticketData.getCategory());
+        if (ticketData.getClientName() != null) existing.setClientName(ticketData.getClientName());
+        if (ticketData.getClientEmail() != null) existing.setClientEmail(ticketData.getClientEmail());
+        if (ticketData.getAssignedTo() != null) existing.setAssignedTo(ticketData.getAssignedTo());
+        
+        save(existing);
+    }
+
 
 }

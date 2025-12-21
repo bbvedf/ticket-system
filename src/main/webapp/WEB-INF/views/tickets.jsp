@@ -77,6 +77,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <form method="get" action="/tickets" class="row g-3">
+            <input type="hidden" name="size" value="${pageSize}">
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">Todos los estados</option>
@@ -136,8 +137,8 @@
 </div>
 
 <!-- Paginación -->
-<!-- Paginación TODO EN UNA FILA -->
-<c:if test="${totalPages > 1}">
+<!-- Paginación SIEMPRE VISIBLE -->
+<c:if test="${totalItems > 0}">
     <!-- Construir parámetros de filtro -->
     <c:set var="filterParams" value="" />
     <c:if test="${not empty param.status}">
