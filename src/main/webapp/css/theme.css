@@ -323,6 +323,26 @@ h1, h2, h3, h4, h5, h6,
   color: var(--color-text) !important;
 }
 
+/* ========== BOTONES LINK CON ICONOS ========== */
+.btn-link i,
+i[class*="bi-"] {
+  color: var(--color-text) !important;
+}
+
+.btn-link {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.btn-link:hover {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.btn-link:hover i {
+  color: var(--color-border) !important;
+}
+
 /* ========== BORDES ========== */
 .border,
 .border-top,
