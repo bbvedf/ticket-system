@@ -574,9 +574,9 @@ footer {
 }
 
 .menu-item {
-  background: none;
-  border: none;
-  color: var(--color-text);
+  background: none !important;
+  border: none !important;
+  color: var(--color-text) !important;
   padding: 0.75rem 1rem;
   width: 100%;
   text-align: left;
@@ -587,10 +587,12 @@ footer {
   border-radius: 4px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
+  text-decoration: none !important;
 }
 
 .menu-item:hover {
-  background: var(--color-input-bg);
+  background: var(--color-input-border) !important;
+  text-decoration: none !important;
 }
 
 .menu-divider {
