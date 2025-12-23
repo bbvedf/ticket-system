@@ -67,7 +67,11 @@
         </a>
         
         <div class="menu-divider"></div>
-        
+        <button class="menu-item" onclick="location.href='/graficos'">
+            <i class="bi bi-graph-up"></i> Gráficos
+        </button>
+
+        <div class="menu-divider"></div>
         <button class="menu-item" onclick="setTheme(document.body.classList.contains('theme-dark') ? 'light' : 'dark')">
             <i class="bi" id="theme-icon"></i>
             <span id="theme-text">Modo Oscuro</span>
