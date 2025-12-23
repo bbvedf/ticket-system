@@ -121,15 +121,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
 <script>
-    // Datos desde el servidor (JSON) - GLOBALES
-    /* global ticketsByStatus, ticketsByPriority, assignedVsUnassigned, ticketsByCategory, avgTimeByPriority, statusDistribution, temporalEvolution */
-    const ticketsByStatus = ${ticketsByStatusJson};
-    const ticketsByPriority = ${ticketsByPriorityJson};
-    const assignedVsUnassigned = ${assignedVsUnassignedJson};
-    const ticketsByCategory = ${ticketsByCategoryJson};
-    const avgTimeByPriority = ${avgTimeByPriorityJson};
-    const statusDistribution = ${statusDistributionJson};
-    const temporalEvolution = ${temporalEvolutionJson};
+    // Datos desde el servidor (JSON) - GLOBALES    
+    const ticketsByStatus = JSON.parse('${ticketsByStatusJson}');
+    const ticketsByPriority = JSON.parse('${ticketsByPriorityJson}');
+    const assignedVsUnassigned = JSON.parse('${assignedVsUnassignedJson}');
+    const ticketsByCategory = JSON.parse('${ticketsByCategoryJson}');
+    const avgTimeByPriority = JSON.parse('${avgTimeByPriorityJson}');
+    const statusDistribution = JSON.parse('${statusDistributionJson}');
+    const temporalEvolution = JSON.parse('${temporalEvolutionJson}');
 
     // Colores
     const colors = {
