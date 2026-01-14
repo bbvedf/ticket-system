@@ -28,15 +28,15 @@
             <h2 class="mb-0">Ticket #${ticket.id}</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="/tickets">Tickets</a></li>
+                    <li class="breadcrumb-item"><a href="/tickets/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/tickets/all">Tickets</a></li>
                     <li class="breadcrumb-item active" aria-current="page">#${ticket.id}</li>
                 </ol>
             </nav>
         </div>
         
         <div>
-            <a href="/tickets" class="btn btn-outline-secondary">
+            <a href="/tickets/all" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Volver a la lista
             </a>
             <a href="/tickets/${ticket.id}/edit" class="btn btn-primary">

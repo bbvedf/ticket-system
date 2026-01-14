@@ -53,7 +53,7 @@
     }
 
     // Cambiar href según tema
-    const faviconPath = theme === 'dark' ? '/logo_dark.png' : '/logo_light.png';
+    const faviconPath = theme === 'dark' ? '/tickets/logo_dark.png' : '/tickets/logo_light.png';
     favicon.href = faviconPath;
   }
 

@@ -72,7 +72,7 @@
                         <a href="/tickets/new" class="btn btn-primary btn-lg w-100 mb-3">
                             <i class="bi bi-plus-circle"></i> Crear Nuevo Ticket
                         </a>
-                        <a href="/tickets" class="btn btn-outline-secondary btn-lg w-100">
+                        <a href="/tickets/all" class="btn btn-outline-secondary btn-lg w-100">
                             <i class="bi bi-list"></i> Ver Todos los Tickets
                         </a>
                     </div>

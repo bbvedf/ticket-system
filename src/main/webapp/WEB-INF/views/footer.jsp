@@ -24,7 +24,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Theme JS -->
-<script src="/js/theme.js"></script>
+<script src="/tickets/js/theme.js"></script>
 
 <!-- Script para actualizar icono del menú -->
 <script>
@@ -37,11 +37,11 @@
         if (isDark) {
             themeIcon.className = 'bi bi-sun-fill';
             themeText.textContent = 'Modo Claro';
-            headerLogo.src = '/logo_dark.png';
+            headerLogo.src = '/tickets/logo_dark.png';
         } else {
             themeIcon.className = 'bi bi-moon-fill';
             themeText.textContent = 'Modo Oscuro';
-            headerLogo.src = '/logo_light.png';
+            headerLogo.src = '/tickets/logo_light.png';
         }
     }
     

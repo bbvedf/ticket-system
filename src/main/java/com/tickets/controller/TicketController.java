@@ -11,14 +11,14 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Controller
-@RequestMapping("/tickets")
+@RequestMapping("")
 @RequiredArgsConstructor
 public class TicketController {
     
     private final TicketService ticketService;
     
     // Lista de tickets con filtros
-    @GetMapping
+    @GetMapping("/all")
     public String listTickets(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String priority,
@@ -58,7 +58,7 @@ public class TicketController {
     }
     
     // Ver detalle de un ticket
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public String viewTicket(@PathVariable Long id, Model model) {
         Ticket ticket = ticketService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket no encontrado"));
@@ -77,7 +77,7 @@ public class TicketController {
     @PostMapping
     public String createTicket(@ModelAttribute Ticket ticket) {
         ticketService.save(ticket);
-        return "redirect:/tickets?message=Ticket creado exitosamente";
+        return "redirect:/all?message=Ticket creado exitosamente";
     }
     
     // Formulario editar ticket
@@ -90,7 +90,7 @@ public class TicketController {
     }
     
     // Actualizar ticket
-    @PostMapping("/{id}")
+    @PostMapping("/{id:[0-9]+}")
     public String updateTicket(@PathVariable Long id, @ModelAttribute Ticket ticket) {
         System.out.println("DEBUG: Ticket recibido: " + ticket);
         System.out.println("DEBUG: ID: " + ticket.getId());
@@ -99,20 +99,20 @@ public class TicketController {
         System.out.println("DEBUG: Status: " + ticket.getStatus());
     
         ticketService.updateTicket(id, ticket);
-        return "redirect:/tickets/" + id + "?message=Ticket actualizado";
+        return "redirect:/all/" + id + "?message=Ticket actualizado";
     }
     
     // Eliminar ticket
     @GetMapping("/{id}/delete")
     public String deleteTicket(@PathVariable Long id) {
         ticketService.deleteById(id);
-        return "redirect:/tickets?message=Ticket eliminado";
+        return "redirect:/all?message=Ticket eliminado";
     }
     
     // Cambiar estado
     @GetMapping("/{id}/status")
     public String updateStatus(@PathVariable Long id, @RequestParam String status) {
         ticketService.updateStatus(id, status);
-        return "redirect:/tickets/" + id + "?message=Estado actualizado";
+        return "redirect:/all/" + id + "?message=Estado actualizado";
     }
 }

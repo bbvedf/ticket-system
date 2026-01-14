@@ -11,13 +11,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">    
     
     <!-- 2. Nuestro tema (sobrescribe Bootstrap) -->
-    <link href="/css/theme.css" rel="stylesheet">    
+    <link href="/tickets/css/theme.css" rel="stylesheet">    
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
     <!-- Favicon dinámico -->
-    <link rel="icon" type="image/png" href="/logo_light.png" id="favicon">
+    <link rel="icon" type="image/png" href="/tickets/logo_light.png" id="favicon">
 
     <style>
         body {
@@ -37,7 +37,7 @@
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <img src="/logo_light.png" alt="Ticket System" height="40" class="me-3" id="header-logo">
+                <img src="/tickets/logo_light.png" alt="Ticket System" height="40" class="me-3" id="header-logo">
                 <h1 class="h3 mb-0 fw-bold">Ticket System</h1>
             </div>
         </div>
@@ -53,11 +53,11 @@
     </button>
     
     <div class="menu-dropdown" style="display: none;">
-        <a href="/" class="menu-item">
+        <a href="/tickets/" class="menu-item">
             <i class="bi bi-house-fill"></i>
             Inicio
         </a>
-        <a href="/tickets" class="menu-item">
+        <a href="/tickets/all" class="menu-item">
             <i class="bi bi-list"></i>
             Tickets
         </a>
@@ -67,7 +67,7 @@
         </a>
         
         <div class="menu-divider"></div>
-        <button class="menu-item" onclick="location.href='/graficos'">
+        <button class="menu-item" onclick="location.href='/tickets/graficos'">
             <i class="bi bi-graph-up"></i> Gráficos
         </button>
 

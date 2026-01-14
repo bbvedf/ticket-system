@@ -30,8 +30,8 @@
                 </h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="/tickets">Tickets</a></li>
+                        <li class="breadcrumb-item"><a href="/tickets/">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/tickets/all">Tickets</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             <c:if test="${empty ticket.id}">Nuevo</c:if>
                             <c:if test="${not empty ticket.id}">Editar</c:if>
@@ -126,7 +126,7 @@
                                     <c:if test="${empty ticket.id}">Crear Ticket</c:if>
                                     <c:if test="${not empty ticket.id}">Guardar Cambios</c:if>
                                 </button>
-                                <a href="/tickets" class="btn btn-outline-secondary">
+                                <a href="/tickets/all" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-left"></i> Cancelar
                                 </a>
                             </div>

@@ -78,7 +78,7 @@
 <!-- Filtros mejorados -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="get" action="/tickets" class="row g-3">
+        <form method="get" action="/tickets/all" class="row g-3">
             <input type="hidden" name="size" value="${pageSize}">
             <div class="col-md-3">
                 <select name="status" class="form-select">
@@ -105,7 +105,7 @@
                            value="${param.search}"
                            aria-label="Buscar tickets">
                     <c:if test="${not empty param.search}">
-                        <a href="/tickets" class="btn btn-outline-secondary" title="Limpiar búsqueda">
+                        <a href="/tickets/all" class="btn btn-outline-secondary" title="Limpiar búsqueda">
                             <i class="bi bi-x"></i>
                         </a>
                     </c:if>
@@ -116,7 +116,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-funnel"></i> Filtrar
                     </button>
-                    <a href="/tickets" class="btn btn-outline-secondary" title="Restablecer filtros">
+                    <a href="/tickets/all" class="btn btn-outline-secondary" title="Restablecer filtros">
                         <i class="bi bi-arrow-clockwise"></i>
                     </a>
                 </div>
